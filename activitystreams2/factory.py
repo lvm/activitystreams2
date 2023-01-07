@@ -16,7 +16,7 @@ def parse_jsonld_compact_iri(property_name: str) -> str:
     Note 2: Activity dataclasses contain in their fields a
     `metadata` property with the original activitystream-property.
     """
-    parsed_property_name = property_name
+    parsed_property_name: str = property_name
     for special_char, replacement in [(":", "__"), ("@", "")]:
         parsed_property_name = parsed_property_name.replace(special_char, replacement)
 
@@ -29,12 +29,12 @@ def asdict(obj: Any) -> dict:
     Converts "AS 2.0 Type" dataclasses to `dict`.
     """
 
-    def getattr_(obj: Any, prop_name: str) -> Union[Any, dict]:
+    def getattr_(obj: Any, prop_name: str) -> Union[Any, list]:
         """
         Enhanced (read "hacky") `getattr` that tries to convert to
         dict if by chance property values are Activity objects.
         """
-        attr = getattr(obj, prop_name)
+        attr: Any = getattr(obj, prop_name)
         if isinstance(attr, list) and hasattr(attr[0], "asdict"):
             return [child.asdict() for child in attr]
         return attr
@@ -126,7 +126,7 @@ def make_activitystream_class(
         for prop in activity_property_names
         if prop not in RESERVED_PROPERTIES
     ]
-    activity_properties: list = default_properties + activity_properties
+    activity_properties = default_properties + activity_properties
 
     # boom, dataclass magic.
     return make_dataclass(
