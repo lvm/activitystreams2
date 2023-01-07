@@ -1,0 +1,13 @@
+#!/bin/sh
+
+CURDIR=$(dirname $0);
+TEST_DIR=$1;
+
+for FILE in $(find $TEST_DIR -type f -iname "*.json" -maxdepth 1);
+do
+    $($CURDIR/activitystream-validator $FILE);
+    EXIT_STATUS=$?;
+    FILENAME=$(basename $FILE);
+    [ "$EXIT_STATUS" = "0" ] && echo "[!] $FILENAME: OK" || echo "[!] $FILENAME: FAIL";
+done
+
