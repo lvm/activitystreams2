@@ -5,7 +5,7 @@ import unittest
 
 from activitystreams2 import (
     DEFAULT_CONTEXT,
-    make_activitystream_class,
+    make_activitystreams_class,
     models,
     parse_activity,
     properties,
@@ -23,7 +23,7 @@ class TestCoreTypes(unittest.TestCase):
         }
 
     def test_type_creation(self):
-        Note = make_activitystream_class("Note", properties.OBJECT_PROPERTIES)
+        Note = make_activitystreams_class("Note", properties.OBJECT_PROPERTIES)
         note_activity = Note(
             id="https://example.com/1", name="hello world", content="hey!!"
         )
