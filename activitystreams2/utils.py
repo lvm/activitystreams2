@@ -1,15 +1,18 @@
 from typing import Any
 
 from activitystreams2.constants import MSSING_ACTIVITY_TYPE, RESERVED_PROPERTIES
-from activitystreams2.factory import make_activitystream_class, parse_jsonld_compact_iri
-from activitystreams2.models import Empty
+from activitystreams2.models import (
+    Empty,
+    make_activitystreams_class,
+    parse_jsonld_compact_iri,
+)
 
 
 def parse_activity(activity_object: dict) -> Any:
     """
     An "AS 2.0 Type" object converter.
     Receives an "AS 2.0 Type" object as `dict`.
-    Returns a dataclass for this "AS 2.0 Type" type using `make_activitystream_class`.
+    Returns a dataclass for this "AS 2.0 Type" type using `make_activitystreams_class`.
     """
     if not activity_object:
         # An Empty Type that mimics the real one.
@@ -28,7 +31,7 @@ def parse_activity(activity_object: dict) -> Any:
     activity_property_names: list = [
         prop for prop, _ in activity_object.items() if prop not in RESERVED_PROPERTIES
     ]
-    activity_cls: Any = make_activitystream_class(
+    activity_cls: Any = make_activitystreams_class(
         activity_classname,
         activity_property_names,
     )

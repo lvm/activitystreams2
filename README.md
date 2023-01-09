@@ -13,9 +13,9 @@ This lib contains:
 ## Example
 
 ```
-from activitystreams2 import make_activitystream_class, properties, OrderedCollection
+from activitystreams2 import make_activitystreams_class, properties, OrderedCollection
 
-Note = make_activitystream_class("Note", properties.OBJECT_PROPERTIES)
+Note = make_activitystreams_class("Note", properties.OBJECT_PROPERTIES)
 
 note1 = Note(id="https://example.com/1", name="hello world", content="hey!!")
 note2 = Note(id="https://example.com/2", name="bye world", content="bye!!")

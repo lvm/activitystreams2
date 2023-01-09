@@ -23,6 +23,14 @@ def parse_jsonld_compact_iri(property_name: str) -> str:
     return parsed_property_name
 
 
+def activitystreams_uri(obj: Any) -> str:
+    as_type: str = ""
+    if obj.type:
+        as_type = f"#{obj.type}"
+
+    return f"https://www.w3.org/ns/activitystreams{as_type}"
+
+
 def asdict(obj: Any) -> dict:
     """
     A dataclass Activity method.
@@ -133,6 +141,7 @@ def make_activitystream_class(
         activity_classname,
         activity_properties,
         namespace={
+            "uri": activitystreams_uri,
             "asdict": asdict,
             "update": update_activity_properties,
             "dismiss_context": remove_activity_property_context,
