@@ -1,5 +1,6 @@
-from dataclasses import MISSING, field, fields, make_dataclass
-from typing import Any, List, Optional, Union
+from abc import abstractmethod
+from dataclasses import MISSING, dataclass, field, fields, make_dataclass
+from typing import Any, List, NewType, Optional, Protocol, TypeVar, runtime_checkable
 
 from activitystreams2.constants import (
     DEFAULT_CONTEXT,
@@ -18,17 +19,31 @@ from activitystreams2.properties import (
 )
 
 
-class Empty:
+@dataclass
+class GenericCoreType(Protocol):
+    def update(self, **kwargs: dict) -> None:
+        return None
+
+    def asdict(self) -> dict:
+        return {}
+
+
+class CoreType(GenericCoreType):
+    id: Optional[str]
+    context: Optional[List | str]
+    type: Optional[str]
+
+
+class Empty(GenericCoreType):
     """
     Generic "Empty" Activity object.
     Mimics the same functionality found in dataclasses created with `make_activitystreams_class`.
     """
 
-    def update(self, **kwargs: dict) -> None:
-        ...
+    ...
 
-    def asdict(self) -> dict:
-        return {}
+
+T_CoreType = TypeVar("T_CoreType", bound=CoreType)
 
 
 def parse_jsonld_compact_iri(property_name: str) -> str:
@@ -47,7 +62,7 @@ def parse_jsonld_compact_iri(property_name: str) -> str:
     return parsed_property_name
 
 
-def activitystreams_uri(obj: Any) -> str:
+def activitystreams_uri(obj: T_CoreType) -> str:
     as_type: str = ""
     if obj.type:
         as_type = f"#{obj.type}"
@@ -55,13 +70,13 @@ def activitystreams_uri(obj: Any) -> str:
     return f"https://www.w3.org/ns/activitystreams{as_type}"
 
 
-def asdict(obj: Any) -> dict:
+def asdict(obj: T_CoreType) -> dict:
     """
     A dataclass Activity method.
     Converts "AS 2.0 Type" dataclasses to `dict`.
     """
 
-    def getattr_(obj: Any, prop_name: str) -> Union[Any, list]:
+    def getattr_(obj: T_CoreType, prop_name: str) -> T_CoreType | list:
         """
         Enhanced (read "hacky") `getattr` that tries to convert to
         dict if by chance property values are Activity objects.
@@ -88,7 +103,7 @@ def asdict(obj: Any) -> dict:
     return activity_dict
 
 
-def update_activity_properties(obj: Any, /, data: dict) -> None:
+def update_activity_properties(obj: T_CoreType, /, data: dict) -> None:
     """
     A dataclass Activity method.
     Sets values for "AS 2.0 Type" dataclasses properties.
@@ -97,7 +112,7 @@ def update_activity_properties(obj: Any, /, data: dict) -> None:
         setattr(obj, key, value)
 
 
-def remove_activity_property_context(obj: Any) -> None:
+def remove_activity_property_context(obj: T_CoreType) -> None:
     """
     A dataclass Activity method.
     Sets `@context` as MISSING. Used mainly in child-activities.
@@ -138,12 +153,12 @@ def make_activitystreams_class(
     default_properties: list = [
         (
             parse_jsonld_compact_iri("@context"),
-            Union[str, list],
+            str | list,
             field(default=DEFAULT_CONTEXT, repr=False, metadata={"name": "@context"}),
         ),
         (
             "type",
-            Union[str, list],
+            str | list,
             field(default=activity_classname, repr=False, metadata={"name": "type"}),
         ),
     ]
