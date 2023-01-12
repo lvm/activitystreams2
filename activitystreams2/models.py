@@ -43,7 +43,7 @@ class Empty(GenericCoreType):
     ...
 
 
-T = TypeVar("T", bound=CoreType)
+T_CoreType = TypeVar("T_CoreType", bound=CoreType)
 
 
 def parse_jsonld_compact_iri(property_name: str) -> str:
@@ -62,7 +62,7 @@ def parse_jsonld_compact_iri(property_name: str) -> str:
     return parsed_property_name
 
 
-def activitystreams_uri(obj: T) -> str:
+def activitystreams_uri(obj: T_CoreType) -> str:
     as_type: str = ""
     if obj.type:
         as_type = f"#{obj.type}"
@@ -70,13 +70,13 @@ def activitystreams_uri(obj: T) -> str:
     return f"https://www.w3.org/ns/activitystreams{as_type}"
 
 
-def asdict(obj: T) -> dict:
+def asdict(obj: T_CoreType) -> dict:
     """
     A dataclass Activity method.
     Converts "AS 2.0 Type" dataclasses to `dict`.
     """
 
-    def getattr_(obj: T, prop_name: str) -> T | list:
+    def getattr_(obj: T_CoreType, prop_name: str) -> T_CoreType | list:
         """
         Enhanced (read "hacky") `getattr` that tries to convert to
         dict if by chance property values are Activity objects.
@@ -103,7 +103,7 @@ def asdict(obj: T) -> dict:
     return activity_dict
 
 
-def update_activity_properties(obj: T, /, data: dict) -> None:
+def update_activity_properties(obj: T_CoreType, /, data: dict) -> None:
     """
     A dataclass Activity method.
     Sets values for "AS 2.0 Type" dataclasses properties.
@@ -112,7 +112,7 @@ def update_activity_properties(obj: T, /, data: dict) -> None:
         setattr(obj, key, value)
 
 
-def remove_activity_property_context(obj: T) -> None:
+def remove_activity_property_context(obj: T_CoreType) -> None:
     """
     A dataclass Activity method.
     Sets `@context` as MISSING. Used mainly in child-activities.
