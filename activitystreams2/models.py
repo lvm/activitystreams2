@@ -1,6 +1,5 @@
-from abc import abstractmethod
 from dataclasses import MISSING, dataclass, field, fields, make_dataclass
-from typing import Any, List, NewType, Optional, Protocol, TypeVar, runtime_checkable
+from typing import Any, List, Optional, Protocol, TypeVar, cast
 
 from activitystreams2.constants import (
     DEFAULT_CONTEXT,
@@ -122,7 +121,7 @@ def remove_activity_property_context(obj: T_CoreType) -> None:
 
 def make_activitystreams_class(
     activity_classname: str, activity_property_names: List[str]
-) -> Any:
+) -> CoreType:
     """
     An "AS 2.0 Type" dataclass factory.
     Receives an "AS 2.0 Type" type name (classname) and its properties.
@@ -176,7 +175,7 @@ def make_activitystreams_class(
     activity_properties = default_properties + activity_properties
 
     # boom, dataclass magic.
-    return make_dataclass(
+    activitystreams_class = make_dataclass(
         activity_classname,
         activity_properties,
         namespace={
@@ -186,6 +185,7 @@ def make_activitystreams_class(
             "dismiss_context": remove_activity_property_context,
         },
     )
+    return cast(CoreType, activitystreams_class)
 
 
 Object = make_activitystreams_class("Object", OBJECT_PROPERTIES)
