@@ -75,8 +75,8 @@ To properly test this lib, you can use the Test Suite provided in the [ActivityS
 
 ```
 $ git clone https://github.com/w3c/activitystreams /tmp/activitystreams
-$ ./bin/activitystream-validator /tmp/activitystreams/test/simple0003.json
-$ ./bin/mass-activitystream-validator /tmp/activitystreams/test/
+$ ./bin/activitystreams-validator /tmp/activitystreams/test/simple0003.json
+$ ./bin/mass-activitystreams-validator /tmp/activitystreams/test/
 ```
 Note: `vocabulary-ex196-jsonld.json` will always fail because it isn't [formatted correctly](https://github.com/w3c/activitystreams/blob/master/test/vocabulary-ex196-jsonld.json) (or at least `json.load` won't parse it).
 
