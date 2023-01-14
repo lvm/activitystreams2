@@ -1,14 +1,15 @@
-from typing import Any
+from typing import Annotated
 
 from activitystreams2.constants import MSSING_ACTIVITY_TYPE, RESERVED_PROPERTIES
 from activitystreams2.models import (
     Empty,
+    CoreType,
     make_activitystreams_class,
     parse_jsonld_compact_iri,
 )
 
 
-def parse_activity(activity_object: dict) -> Any:
+def parse_activitystreams_object(activity_object: dict) -> Empty | CoreType:
     """
     An "AS 2.0 Type" object converter.
     Receives an "AS 2.0 Type" object as `dict`.
@@ -31,11 +32,11 @@ def parse_activity(activity_object: dict) -> Any:
     activity_property_names: list = [
         prop for prop, _ in activity_object.items() if prop not in RESERVED_PROPERTIES
     ]
-    activity_cls: Any = make_activitystreams_class(
+    activity_cls: CoreType = make_activitystreams_class(
         activity_classname,
         activity_property_names,
     )
-    activity_instance: Any = activity_cls()
+    activity_instance = activity_cls()
     activity_instance.update(
         {
             parse_jsonld_compact_iri(prop): value

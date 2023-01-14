@@ -31,6 +31,39 @@ print(collection)
 print(json.dumps(collection.asdict(), indent=2))
 ```
 
+```
+from activitystreams2 import parse_activitystreams_object
+
+activitystreams_dct = {
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "summary": "Sally added a picture of her cat to her cat picture collection",
+  "type": "Add",
+  "actor": {
+    "type": "Person",
+    "name": "Sally"
+  },
+  "object": {
+    "type": "Image",
+    "name": "A picture of my cat",
+    "url": "http://example.org/img/cat.png"
+  },
+  "origin": {
+    "type": "Collection",
+    "name": "Camera Roll"
+  },
+  "target": {
+    "type": "Collection",
+    "name": "My Cat Pictures"
+  }
+}
+
+parse_activitystreams_object(activitystreams_dct)
+
+[...]
+
+Add(summary='Sally added a picture of her cat to her cat picture collection', actor={'type': 'Person', 'name': 'Sally'}, object={'type': 'Image', 'name': 'A picture of my cat', 'url': 'http://example.org/img/cat.png'}, origin={'type': 'Collection', 'name': 'Camera Roll'}, target={'type': 'Collection', 'name': 'My Cat Pictures'})
+```
+
 ## Test
 
 ```

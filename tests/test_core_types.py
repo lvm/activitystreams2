@@ -7,7 +7,7 @@ from activitystreams2 import (
     DEFAULT_CONTEXT,
     make_activitystreams_class,
     models,
-    parse_activity,
+    parse_activitystreams_object,
     properties,
 )
 
@@ -35,14 +35,14 @@ class TestCoreTypes(unittest.TestCase):
         del note_activity_dict_no_ctx["@context"]
         self.assertEqual(note_activity.asdict(), note_activity_dict_no_ctx)
 
-    def test_parse_activity(self):
+    def test_parse_activitystreams_object(self):
         link_activity_dct = {
             "@context": "https://www.w3.org/ns/activitystreams",
             "type": "Link",
             "href": "https://example.com/hello-world",
             "name": "Hello World",
         }
-        parsed_activity_instance = parse_activity(link_activity_dct)
+        parsed_activity_instance = parse_activitystreams_object(link_activity_dct)
         link_activity = models.Link(
             href="https://example.com/hello-world", name="Hello World"
         )

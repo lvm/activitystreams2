@@ -20,11 +20,17 @@ from activitystreams2.properties import (
 
 @dataclass
 class GenericCoreType(Protocol):
+    def uri(self) -> str:
+        return "https://www.w3.org/ns/activitystreams"
+
     def update(self, **kwargs: dict) -> None:
         return None
 
     def asdict(self) -> dict:
         return {}
+
+    def dismiss_context(self) -> None:
+        return None
 
 
 class CoreType(GenericCoreType):
