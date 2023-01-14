@@ -6,7 +6,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="activitystreams2",
-    version="0.0.2",
+    version="0.0.3",
     description="A library that allows creation of ActivityStreams 2.0 Types",
     long_description=README,
     long_description_content_type="text/markdown",
