@@ -32,6 +32,9 @@ class CoreType(GenericCoreType):
     context: Optional[List | str]
     type: Optional[str]
 
+    def __call__(self, *args: Any, **kwargs: Any) -> Any:
+        return self(*args, **kwargs)
+
 
 class Empty(GenericCoreType):
     """
