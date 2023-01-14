@@ -1,5 +1,3 @@
-from typing import Annotated
-
 from activitystreams2.constants import MSSING_ACTIVITY_TYPE, RESERVED_PROPERTIES
 from activitystreams2.models import (
     Empty,
