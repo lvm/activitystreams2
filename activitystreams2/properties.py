@@ -1,4 +1,8 @@
 # Object properties
+ID = "id"
+AT_CONTEXT = "@context"
+TYPE = "type"
+
 ATTACHMENT = "attachment"
 ATTRIBUTED_TO = "attributedTo"
 AUDIENCE = "audience"
@@ -74,9 +78,6 @@ FOLLOWING = "following"
 FOLLOWERS = "followers"
 PREFERRED_USERNAME = "preferredUsername"
 PUBLIC_KEY = "publicKey"
-
-ID = "id"
-
 
 # Grouped Properties
 OBJECT_PROPERTIES = [
